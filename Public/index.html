@@ -1,0 +1,3478 @@
+<!DOCTYPE html>
+<html lang="om">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#087443">
+  <meta name="description" content="Waliin-OR - Chat, Voice, Video, Club fi Call">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon-192.png">
+  <title>Waliin-OR</title>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family:Arial,sans-serif;
+      background:#f5f7f6;
+      color:#222;
+    }
+
+    button,input,textarea,select{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    .hidden{
+      display:none!important;
+    }
+
+    /* AUTH */
+    #authPage{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#087443;
+      padding:20px;
+    }
+
+    .auth-box{
+      width:100%;
+      max-width:420px;
+      background:#fff;
+      border-radius:22px;
+      padding:30px 22px;
+      box-shadow:0 15px 45px rgba(0,0,0,.2);
+    }
+
+    .logo-circle{
+      width:85px;
+      height:85px;
+      border-radius:50%;
+      background:#087443;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      font-weight:bold;
+      margin:0 auto 15px;
+    }
+
+    .auth-box h1{
+      text-align:center;
+      color:#087443;
+      margin-bottom:8px;
+    }
+
+    .auth-sub{
+      text-align:center;
+      color:#777;
+      margin-bottom:25px;
+    }
+
+    .form-group{
+      margin-bottom:15px;
+    }
+
+    .form-group input{
+      width:100%;
+      padding:13px;
+      border:1px solid #ddd;
+      border-radius:12px;
+      outline:none;
+    }
+
+    .form-group input:focus{
+      border-color:#087443;
+    }
+
+    .main-btn{
+      width:100%;
+      border:0;
+      background:#087443;
+      color:#fff;
+      padding:13px;
+      border-radius:12px;
+      font-weight:bold;
+      margin-top:5px;
+    }
+
+    .switch-auth{
+      text-align:center;
+      margin-top:18px;
+      color:#666;
+    }
+
+    .switch-auth span{
+      color:#087443;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    /* APP */
+    #appPage{
+      min-height:100vh;
+    }
+
+    .topbar{
+      height:65px;
+      background:#087443;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 15px;
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:1000;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:bold;
+    }
+
+    .brand-icon{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      background:#fff;
+      color:#087443;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:8px;
+    }
+
+    .icon-btn{
+      width:40px;
+      height:40px;
+      border:0;
+      border-radius:50%;
+      background:rgba(255,255,255,.15);
+      color:#fff;
+      font-size:18px;
+    }
+
+    .side-menu{
+      position:fixed;
+      top:65px;
+      left:0;
+      bottom:0;
+      width:250px;
+      background:#fff;
+      border-right:1px solid #ddd;
+      overflow-y:auto;
+      z-index:900;
+      padding-bottom:80px;
+    }
+
+    .menu-head{
+      padding:20px 15px;
+      border-bottom:1px solid #eee;
+    }
+
+    .menu-avatar{
+      width:55px;
+      height:55px;
+      border-radius:50%;
+      background:#087443;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      margin-bottom:10px;
+    }
+
+    .menu-head h3{
+      margin-bottom:3px;
+    }
+
+    .menu-head p{
+      color:#888;
+      font-size:13px;
+    }
+
+    .menu-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      width:100%;
+      padding:14px 18px;
+      border:0;
+      background:#fff;
+      color:#333;
+      text-align:left;
+    }
+
+    .menu-item:hover,
+    .menu-item.active{
+      background:#eaf5ef;
+      color:#087443;
+    }
+
+    .main-content{
+      margin-left:250px;
+      padding-top:65px;
+      min-height:100vh;
+      padding-bottom:80px;
+    }
+
+    .page{
+      padding:20px;
+      max-width:1100px;
+      margin:auto;
+    }
+
+    .welcome{
+      background:#087443;
+      color:#fff;
+      padding:25px;
+      border-radius:18px;
+      margin-bottom:20px;
+    }
+
+    .welcome h2{
+      margin-bottom:8px;
+    }
+
+    .welcome p{
+      line-height:1.6;
+    }
+
+    .quick-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:15px;
+    }
+
+    .quick-card{
+      background:#fff;
+      border-radius:16px;
+      padding:20px;
+      box-shadow:0 3px 12px rgba(0,0,0,.06);
+      cursor:pointer;
+      text-align:center;
+    }
+
+    .quick-card .emoji{
+      font-size:30px;
+      margin-bottom:10px;
+    }
+
+    .card{
+      background:#fff;
+      border-radius:16px;
+      padding:18px;
+      margin-bottom:15px;
+      box-shadow:0 3px 12px rgba(0,0,0,.05);
+    }
+
+    .card h3{
+      margin-bottom:12px;
+      color:#087443;
+    }
+
+    .search-box{
+      display:flex;
+      gap:8px;
+      margin-bottom:15px;
+    }
+
+    .search-box input{
+      flex:1;
+      padding:12px;
+      border:1px solid #ddd;
+      border-radius:12px;
+    }
+
+    .search-box button{
+      border:0;
+      background:#087443;
+      color:#fff;
+      padding:0 18px;
+      border-radius:12px;
+    }
+
+    .user-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 0;
+      border-bottom:1px solid #eee;
+    }
+
+    .user-avatar{
+      width:45px;
+      height:45px;
+      border-radius:50%;
+      background:#087443;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+    }
+
+    .user-info{
+      flex:1;
+    }
+
+    .user-info small{
+      color:#777;
+    }
+
+    .green-btn{
+      border:0;
+      background:#087443;
+      color:#fff;
+      padding:9px 13px;
+      border-radius:10px;
+    }
+
+    .danger-btn{
+      border:0;
+      background:#d32f2f;
+      color:#fff;
+      padding:9px 13px;
+      border-radius:10px;
+    }
+
+    .secondary-btn{
+      border:1px solid #087443;
+      background:#fff;
+      color:#087443;
+      padding:9px 13px;
+      border-radius:10px;
+    }
+
+    .chat-box{
+      height:420px;
+      overflow-y:auto;
+      background:#f5f7f6;
+      padding:15px;
+      border-radius:15px;
+      margin-bottom:12px;
+    }
+
+    .message{
+      max-width:80%;
+      padding:10px 13px;
+      border-radius:14px;
+      margin-bottom:10px;
+    }
+
+    .message.mine{
+      background:#087443;
+      color:#fff;
+      margin-left:auto;
+    }
+
+    .message.other{
+      background:#fff;
+    }
+
+    .chat-input{
+      display:flex;
+      gap:8px;
+    }
+
+    .chat-input input{
+      flex:1;
+      padding:12px;
+      border:1px solid #ddd;
+      border-radius:12px;
+    }
+
+    .chat-input button{
+      border:0;
+      background:#087443;
+      color:#fff;
+      padding:0 18px;
+      border-radius:12px;
+    }
+
+    .club-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:15px;
+    }
+
+    .seat-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:8px;
+      margin-top:15px;
+    }
+
+    .seat{
+      min-height:60px;
+      border:1px solid #ddd;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      font-size:12px;
+    }
+
+    .seat.occupied{
+      background:#eaf5ef;
+      border-color:#087443;
+    }
+
+    .call-box{
+      text-align:center;
+      padding:30px 10px;
+    }
+
+    .call-avatar{
+      width:100px;
+      height:100px;
+      border-radius:50%;
+      background:#087443;
+      color:#fff;
+      font-size:35px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:0 auto 20px;
+    }
+
+    video{
+      width:100%;
+      max-height:500px;
+      background:#111;
+      border-radius:15px;
+    }
+
+    .settings-row{
+      padding:15px 0;
+      border-bottom:1px solid #eee;
+    }
+
+    .settings-row h4{
+      margin-bottom:4px;
+    }
+
+    .settings-row p{
+      color:#777;
+      font-size:13px;
+    }
+
+    .bottom-nav{
+      display:none;
+    }
+
+    /* MODAL */
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:2000;
+      padding:20px;
+    }
+
+    .modal-box{
+      width:100%;
+      max-width:420px;
+      background:#fff;
+      border-radius:18px;
+      padding:22px;
+    }
+
+    .modal-box h3{
+      color:#087443;
+      margin-bottom:15px;
+    }
+
+    .modal-box input,
+    .modal-box textarea,
+    .modal-box select{
+      width:100%;
+      padding:12px;
+      border:1px solid #ddd;
+      border-radius:10px;
+      margin-bottom:12px;
+    }
+
+    .modal-actions{
+      display:flex;
+      gap:8px;
+      justify-content:flex-end;
+    }
+
+    #toast{
+      position:fixed;
+      left:50%;
+      bottom:25px;
+      transform:translateX(-50%);
+      background:#222;
+      color:#fff;
+      padding:12px 18px;
+      border-radius:12px;
+      z-index:5000;
+      display:none;
+    }
+
+    /* DARK */
+    body.dark{
+      background:#121212;
+      color:#eee;
+    }
+
+    body.dark .card,
+    body.dark .quick-card,
+    body.dark .side-menu,
+    body.dark .menu-item,
+    body.dark .modal-box{
+      background:#1e1e1e;
+      color:#eee;
+    }
+
+    body.dark .menu-item{
+      color:#eee;
+    }
+
+    body.dark .menu-item:hover,
+    body.dark .menu-item.active{
+      background:#163c2b;
+      color:#fff;
+    }
+
+    body.dark .chat-box{
+      background:#181818;
+    }
+
+    body.dark .message.other{
+      background:#292929;
+    }
+
+    body.dark input,
+    body.dark textarea,
+    body.dark select{
+      background:#292929;
+      color:#fff;
+      border-color:#444;
+    }
+
+    body.dark .secondary-btn{
+      background:#1e1e1e;
+    }
+
+    /* MOBILE */
+    @media(max-width:800px){
+      .side-menu{
+        display:none;
+      }
+
+      .main-content{
+        margin-left:0;
+      }
+
+      .bottom-nav{
+        position:fixed;
+        display:flex;
+        bottom:0;
+        left:0;
+        right:0;
+        height:65px;
+        background:#fff;
+        border-top:1px solid #ddd;
+        z-index:1000;
+      }
+
+      .bottom-nav button{
+        flex:1;
+        border:0;
+        background:#fff;
+        color:#666;
+        font-size:11px;
+      }
+
+      .bottom-nav button.active{
+        color:#087443;
+      }
+
+      body.dark .bottom-nav,
+      body.dark .bottom-nav button{
+        background:#1e1e1e;
+        color:#aaa;
+      }
+
+      body.dark .bottom-nav button.active{
+        color:#fff;
+      }
+
+      .main-content{
+        padding-bottom:75px;
+      }
+
+      .page{
+        padding:14px;
+      }
+
+      .seat-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .topbar{
+        height:60px;
+      }
+
+      .main-content{
+        padding-top:60px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- AUTH PAGE -->
+<div id="authPage">
+
+  <div class="auth-box">
+
+    <div class="logo-circle">WO</div>
+
+    <h1>WALIIN-OR</h1>
+
+    <p class="auth-sub">
+      Chat • Voice • Video • Club
+    </p>
+
+    <!-- LOGIN -->
+    <div id="loginForm">
+
+      <div class="form-group">
+        <input
+          id="loginUsername"
+          type="text"
+          placeholder="Username"
+          autocomplete="username"
+        >
+      </div>
+
+      <div class="form-group">
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Password"
+          autocomplete="current-password"
+        >
+      </div>
+
+      <button class="main-btn" onclick="login()">
+        Seeni
+      </button>
+
+      <div class="switch-auth">
+        Account hin qabduu?
+        <span onclick="showRegister()">Galmaa'i</span>
+      </div>
+
+    </div>
+
+    <!-- REGISTER -->
+    <div id="registerForm" class="hidden">
+
+      <div class="form-group">
+        <input
+          id="registerUsername"
+          type="text"
+          placeholder="Username"
+          autocomplete="username"
+        >
+      </div>
+
+      <div class="form-group">
+        <input
+          id="registerEmail"
+          type="email"
+          placeholder="Email"
+          autocomplete="email"
+        >
+      </div>
+
+      <div class="form-group">
+        <input
+          id="registerPassword"
+          type="password"
+          placeholder="Password"
+          autocomplete="new-password"
+        >
+      </div>
+
+      <button class="main-btn" onclick="registerUser()">
+        Galmaa'i
+      </button>
+
+      <div class="switch-auth">
+        Account qabdaa?
+        <span onclick="showLogin()">Seeni</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- APP -->
+<div id="appPage" class="hidden">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+
+    <div class="brand">
+      <div class="brand-icon">WO</div>
+      <span>Waliin-OR</span>
+    </div>
+
+    <div class="top-actions">
+
+      <button
+        class="icon-btn"
+        onclick="openPage('notifications')"
+      >
+        🔔
+      </button>
+
+      <button
+        class="icon-btn"
+        onclick="toggleMenu()"
+      >
+        ☰
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- SIDE MENU -->
+  <aside id="sideMenu" class="side-menu">
+
+    <div class="menu-head">
+
+      <div id="menuAvatar" class="menu-avatar">
+        U
+      </div>
+
+      <h3 id="menuUsername">
+        User
+      </h3>
+
+      <p>Waliin-OR</p>
+
+    </div>
+
+
+    <button
+      class="menu-item active"
+      onclick="openPage('home')"
+    >
+      🏠
+      <span>Home</span>
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="openPage('chat')"
+    >
+      💬
+      <span>Chat</span>
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="openPage('club')"
+    >
+      🎙️
+      <span>Voice Club</span>
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="openPage('call')"
+    >
+      📞
+      <span>Call</span>
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="openPage('video')"
+    >
+      📹
+      <span>Video Room</span>
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="openPage('search')"
+    >
+      🔍
+      <span>Search</span>
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="openPage('profile')"
+    >
+      👤
+      <span>Profile</span>
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="openPage('notifications')"
+    >
+      🔔
+      <span>Notifications</span>
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="openPage('settings')"
+    >
+      ⚙️
+      <span>Settings</span>
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="logout()"
+    >
+      🚪
+      <span>Logout</span>
+    </button>
+
+  </aside>
+
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+
+    <!-- HOME -->
+    <section id="page-home" class="page">
+
+      <div class="welcome">
+
+        <h2>
+          Baga nagaan dhuftan, <span id="welcomeUsername">User</span>!
+        </h2>
+
+        <p>
+          Waliin-OR keessatti namoota waliin haasa'i,
+          baradhu, mari'adhu, sagalee fi viidiyoodhaan
+          wal qunnami.
+        </p>
+
+      </div>
+
+
+      <div class="quick-grid">
+
+        <div
+          class="quick-card"
+          onclick="openPage('chat')"
+        >
+          <div class="emoji">💬</div>
+          <strong>Chat</strong>
+        </div>
+
+
+        <div
+          class="quick-card"
+          onclick="openPage('club')"
+        >
+          <div class="emoji">🎙️</div>
+          <strong>Voice Club</strong>
+        </div>
+
+
+        <div
+          class="quick-card"
+          onclick="openPage('call')"
+        >
+          <div class="emoji">📞</div>
+          <strong>Call</strong>
+        </div>
+
+
+        <div
+          class="quick-card"
+          onclick="openPage('video')"
+        >
+          <div class="emoji">📹</div>
+          <strong>Video Room</strong>
+        </div>
+
+
+        <div
+          class="quick-card"
+          onclick="openPage('search')"
+        >
+          <div class="emoji">🔍</div>
+          <strong>Search</strong>
+        </div>
+
+
+        <div
+          class="quick-card"
+          onclick="openPage('profile')"
+        >
+          <div class="emoji">👤</div>
+          <strong>Profile</strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SEARCH -->
+    <section id="page-search" class="page hidden">
+
+      <div class="card">
+
+        <h3>🔍 Search</h3>
+
+        <p style="color:#777;margin-bottom:15px;">
+          Namoota Waliin-OR keessa jiran barbaadi.
+        </p>
+
+        <div class="search-box">
+
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Maqaa barbaadi..."
+          >
+
+          <button onclick="searchUsers()">
+            Barbaadi
+          </button>
+
+        </div>
+
+        <div id="searchResults"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CHAT -->
+    <section id="page-chat" class="page hidden">
+
+      <div class="card">
+
+        <h3>💬 Chat</h3>
+
+        <div id="chatBox" class="chat-box">
+          <p style="color:#777;text-align:center;">
+            Nama tokko Search godhiitii chat jalqabi.
+          </p>
+        </div>
+
+
+        <div class="chat-input">
+
+          <input
+            id="messageInput"
+            type="text"
+            placeholder="Ergaa barreessi..."
+            onkeydown="if(event.key==='Enter') sendMessage()"
+          >
+
+          <button onclick="sendMessage()">
+            Ergi
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CLUB -->
+    <section id="page-club" class="page hidden">
+
+      <div class="club-grid">
+
+        <div class="card">
+
+          <h3>🎙️ Create Club</h3>
+
+          <p style="color:#777;margin-bottom:15px;">
+            Voice club haaraa uumi.
+          </p>
+
+          <button
+            class="green-btn"
+            onclick="showCreateClubModal()"
+          >
+            Create Club
+          </button>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>🔗 Join Club</h3>
+
+          <p style="color:#777;margin-bottom:15px;">
+            Club ID fayyadamuun seeni.
+          </p>
+
+          <input
+            id="joinClubId"
+            type="text"
+            placeholder="Club ID"
+            style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin-bottom:10px;"
+          >
+
+          <button
+            class="green-btn"
+            onclick="joinClub()"
+          >
+            Join Club
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div id="clubArea"></div>
+
+    </section>
+
+
+    <!-- CALL -->
+    <section id="page-call" class="page hidden">
+
+      <div class="card">
+
+        <h3>📞 Call</h3>
+
+        <div class="call-box">
+
+          <div class="call-avatar">
+            📞
+          </div>
+
+          <p style="color:#777;margin-bottom:15px;">
+            Nama barbaaddeef Search godhi.
+          </p>
+
+          <button
+            class="green-btn"
+            onclick="openPage('search')"
+          >
+            Nama Barbaadi
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- VIDEO -->
+    <section id="page-video" class="page hidden">
+
+      <div class="card">
+
+        <h3>📹 Video Room</h3>
+
+        <video
+          id="localVideo"
+          autoplay
+          muted
+          playsinline
+        ></video>
+
+        <br><br>
+
+        <button
+          class="green-btn"
+          onclick="startVideo()"
+        >
+          Camera Bani
+        </button>
+
+        <button
+          class="danger-btn"
+          onclick="stopVideo()"
+        >
+          Camera Cufi
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- PROFILE -->
+    <section id="page-profile" class="page hidden">
+
+      <div class="card">
+
+        <h3>👤 Profile</h3>
+
+        <div style="text-align:center;margin-bottom:20px;">
+
+          <div
+            id="profileAvatar"
+            class="menu-avatar"
+            style="margin:0 auto 10px;"
+          >
+            U
+          </div>
+
+          <h2 id="profileUsername">
+            User
+          </h2>
+
+          <p id="profileEmail" style="color:#777;">
+            -
+          </p>
+
+        </div>
+
+
+        <div class="settings-row">
+
+          <h4>Username</h4>
+
+          <p id="profileUsernameText">
+            -
+          </p>
+
+        </div>
+
+
+        <div class="settings-row">
+
+          <h4>Email</h4>
+
+          <p id="profileEmailText">
+            -
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- NOTIFICATIONS -->
+    <section id="page-notifications" class="page hidden">
+
+      <div class="card">
+
+        <h3>🔔 Notifications</h3>
+
+        <div id="notificationsList">
+
+          <p style="color:#777;">
+            Notification hin jiru.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SETTINGS -->
+    <section id="page-settings" class="page hidden">
+
+      <div class="card">
+
+        <h3>⚙️ Settings</h3>
+
+        <p style="color:#777;margin-bottom:15px;">
+          Qindaa'ina Waliin-OR.
+        </p>
+
+
+        <div class="settings-row">
+
+          <h4>🌙 Dark Mode</h4>
+
+          <p>
+            Halluu screen jijjiiri.
+          </p>
+
+          <br>
+
+          <button
+            class="green-btn"
+            onclick="toggleDarkMode()"
+          >
+            Dark / Light
+          </button>
+
+        </div>
+
+
+        <div class="settings-row">
+
+          <h3>ℹ️ Waliin-OR</h3>
+
+          <p>
+            Chat, Voice, Video, Club fi Call App.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+
+    <button
+      class="active"
+      onclick="openPage('home')"
+    >
+      🏠<br>Home
+    </button>
+
+    <button onclick="openPage('chat')">
+      💬<br>Chat
+    </button>
+
+    <button onclick="openPage('club')">
+      🎙️<br>Club
+    </button>
+
+    <button onclick="openPage('search')">
+      🔍<br>Search
+    </button>
+
+    <button onclick="openPage('profile')">
+      👤<br>Profile
+    </button>
+
+  </nav>
+
+</div>
+
+
+<!-- INCOMING CALL MODAL -->
+<div
+  id="incomingCallModal"
+  class="modal hidden"
+>
+
+  <div class="modal-box">
+
+    <h3>📞 Incoming Call</h3>
+
+    <p id="incomingCaller">
+      Namni tokko si waamaa jira.
+    </p>
+
+    <br>
+
+    <div class="modal-actions">
+
+      <button
+        class="danger-btn"
+        onclick="rejectIncomingCall()"
+      >
+        Diduu
+      </button>
+
+      <button
+        class="green-btn"
+        onclick="acceptIncomingCall()"
+      >
+        Fudhachuu
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- CREATE CLUB MODAL -->
+<div
+  id="createClubModal"
+  class="modal hidden"
+>
+
+  <div class="modal-box">
+
+    <h3>🎙️ Create Club</h3>
+
+    <input
+      id="clubName"
+      type="text"
+      placeholder="Maqaa Club"
+    >
+
+    <select id="clubSeats">
+
+      <option value="10">
+        10 Seats
+      </option>
+
+      <option value="15">
+        15 Seats
+      </option>
+
+    </select>
+
+    <div class="modal-actions">
+
+      <button
+        class="secondary-btn"
+        onclick="closeCreateClubModal()"
+      >
+        Cufi
+      </button>
+
+      <button
+        class="green-btn"
+        onclick="createClub()"
+      >
+        Uumi
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+
+<audio
+  id="remoteAudio"
+  autoplay
+></audio>
+
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+  /* =========================
+     BASIC SETTINGS
+  ========================= */
+
+  const API = "";
+
+  let token =
+    localStorage.getItem("waliin_token");
+
+  let currentUser =
+    JSON.parse(
+      localStorage.getItem("waliin_user") || "null"
+    );
+
+  let socket = null;
+
+  let currentChatUser = null;
+
+  let localStream = null;
+
+  let peerConnection = null;
+
+  let incomingCallData = null;
+
+
+  /* =========================
+     AUTH FORMS
+  ========================= */
+
+  function showRegister(){
+
+    document
+      .getElementById("loginForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("registerForm")
+      .classList.remove("hidden");
+
+  }
+
+
+  function showLogin(){
+
+    document
+      .getElementById("registerForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("loginForm")
+      .classList.remove("hidden");
+
+  }
+
+
+  /* =========================
+     API
+  ========================= */
+
+  async function api(
+    url,
+    options = {}
+  ){
+
+    options.headers = {
+      ...(options.headers || {}),
+      "Content-Type":"application/json"
+    };
+
+    if(token){
+
+      options.headers.Authorization =
+        "Bearer " + token;
+
+    }
+
+    const response =
+      await fetch(
+        API + url,
+        options
+      );
+
+    let data = {};
+
+    try{
+
+      data = await response.json();
+
+    }catch(e){}
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        data.message ||
+        "Request failed"
+      );
+
+    }
+
+    return data;
+
+  }
+
+
+  /* =========================
+     REGISTER
+  ========================= */
+
+  async function registerUser(){
+
+    const username =
+      document
+        .getElementById("registerUsername")
+        .value
+        .trim();
+
+    const email =
+      document
+        .getElementById("registerEmail")
+        .value
+        .trim();
+
+    const password =
+      document
+        .getElementById("registerPassword")
+        .value;
+
+    if(!username || !email || !password){
+
+      showToast(
+        "Odeeffannoo guutuu galchi."
+      );
+
+      return;
+
+    }
+
+    try{
+
+      const data =
+        await api(
+          "/api/register",
+          {
+            method:"POST",
+            body:JSON.stringify({
+              username,
+              email,
+              password
+            })
+          }
+        );
+
+      token = data.token;
+
+      currentUser = data.user;
+
+      localStorage.setItem(
+        "waliin_token",
+        token
+      );
+
+      localStorage.setItem(
+        "waliin_user",
+        JSON.stringify(currentUser)
+      );
+
+      openApp();
+
+      showToast(
+        "Galmeen milkaa'e."
+      );
+
+    }catch(error){
+
+      showToast(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  /* =========================
+     LOGIN
+  ========================= */
+
+  async function login(){
+
+    const username =
+      document
+        .getElementById("loginUsername")
+        .value
+        .trim();
+
+    const password =
+      document
+        .getElementById("loginPassword")
+        .value;
+
+    if(!username || !password){
+
+      showToast(
+        "Username fi password galchi."
+      );
+
+      return;
+
+    }
+
+    try{
+
+      const data =
+        await api(
+          "/api/login",
+          {
+            method:"POST",
+            body:JSON.stringify({
+              username,
+              password
+            })
+          }
+        );
+
+      token = data.token;
+
+      currentUser = data.user;
+
+      localStorage.setItem(
+        "waliin_token",
+        token
+      );
+
+      localStorage.setItem(
+        "waliin_user",
+        JSON.stringify(currentUser)
+      );
+
+      openApp();
+
+      showToast(
+        "Seenteetta."
+      );
+
+    }catch(error){
+
+      showToast(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  /* =========================
+     OPEN APP
+  ========================= */
+
+  function openApp(){
+
+    document
+      .getElementById("authPage")
+      .classList.add("hidden");
+
+    document
+      .getElementById("appPage")
+      .classList.remove("hidden");
+
+    updateUserUI();
+
+    connectSocket();
+
+    loadNotifications();
+
+    openPage("home");
+
+  }
+
+
+  function updateUserUI(){
+
+    if(!currentUser)
+      return;
+
+    const username =
+      currentUser.username || "User";
+
+    const first =
+      username.charAt(0).toUpperCase();
+
+    document
+      .getElementById("menuUsername")
+      .textContent = username;
+
+    document
+      .getElementById("welcomeUsername")
+      .textContent = username;
+
+    document
+      .getElementById("profileUsername")
+      .textContent = username;
+
+    document
+      .getElementById("profileUsernameText")
+      .textContent = username;
+
+    document
+      .getElementById("menuAvatar")
+      .textContent = first;
+
+    document
+      .getElementById("profileAvatar")
+      .textContent = first;
+
+    document
+      .getElementById("profileEmail")
+      .textContent =
+      currentUser.email || "-";
+
+    document
+      .getElementById("profileEmailText")
+      .textContent =
+      currentUser.email || "-";
+
+  }
+
+
+  /* =========================
+     SOCKET
+  ========================= */
+
+  function connectSocket(){
+
+    if(socket)
+      return;
+
+    socket =
+      io();
+
+    socket.on(
+      "connect",
+      () => {
+
+        showToast(
+          "Waliin-OR waliin walqabateera."
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "presenceUpdate",
+      users => {
+
+        window.onlineUsers =
+          users || [];
+
+      }
+    );
+
+
+    socket.on(
+      "privateMessage",
+      message => {
+
+        if(
+          currentChatUser &&
+          (
+            message.from_id === currentChatUser.id ||
+            message.to_id === currentChatUser.id
+          )
+        ){
+
+          loadMessages(
+            currentChatUser.id
+          );
+
+        }
+
+        showToast(
+          "Ergaa haaraa qabda."
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "messageRead",
+      () => {
+
+        if(currentChatUser){
+
+          loadMessages(
+            currentChatUser.id
+          );
+
+        }
+
+      }
+    );
+
+
+    socket.on(
+      "messageDeleted",
+      () => {
+
+        if(currentChatUser){
+
+          loadMessages(
+            currentChatUser.id
+          );
+
+        }
+
+      }
+    );
+
+
+    socket.on(
+      "messageError",
+      data => {
+
+        showToast(
+          data.error || "Dogoggora"
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "clubUpdated",
+      club => {
+
+        renderClub(
+          club
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "clubMemberUpdate",
+      club => {
+
+        renderClub(
+          club
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "removedFromClub",
+      () => {
+
+        document
+          .getElementById("clubArea")
+          .innerHTML = "";
+
+        showToast(
+          "Club keessaa baafamte."
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "clubChatMessage",
+      message => {
+
+        showToast(
+          "Club Chat: " +
+          (message.username || "")
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "giftReceived",
+      data => {
+
+        showToast(
+          "🎁 Gift argatte!"
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "notification",
+      notification => {
+
+        showToast(
+          notification.title ||
+          "Notification haaraa"
+        );
+
+        loadNotifications();
+
+      }
+    );
+
+
+    socket.on(
+      "incomingCall",
+      data => {
+
+        incomingCallData =
+          data;
+
+        document
+          .getElementById("incomingCaller")
+          .textContent =
+          (
+            data.from_username ||
+            "Namni tokko"
+          ) +
+          " si waamaa jira.";
+
+        document
+          .getElementById(
+            "incomingCallModal"
+          )
+          .classList.remove("hidden");
+
+      }
+    );
+
+
+    socket.on(
+      "callAccepted",
+      async data => {
+
+        if(
+          data &&
+          data.answer
+        ){
+
+          await handleAnswer(
+            data.answer
+          );
+
+        }
+
+      }
+    );
+
+
+    socket.on(
+      "callRejected",
+      () => {
+
+        showToast(
+          "Call didame."
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "callUnavailable",
+      () => {
+
+        showToast(
+          "Namni sun online miti."
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "callEnded",
+      () => {
+
+        endCallLocal();
+
+      }
+    );
+
+
+    socket.on(
+      "webrtc-offer",
+      async data => {
+
+        await handleOffer(
+          data
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "webrtc-answer",
+      async data => {
+
+        await handleAnswer(
+          data.answer
+        );
+
+      }
+    );
+
+
+    socket.on(
+      "webrtc-ice",
+      async data => {
+
+        if(
+          peerConnection &&
+          data.candidate
+        ){
+
+          try{
+
+            await peerConnection.addIceCandidate(
+              data.candidate
+            );
+
+          }catch(e){}
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* =========================
+     PAGE NAVIGATION
+  ========================= */
+
+  function openPage(page){
+
+    document
+      .querySelectorAll(".page")
+      .forEach(
+        element => {
+          element.classList.add(
+            "hidden"
+          );
+        }
+      );
+
+
+    const selected =
+      document.getElementById(
+        "page-" + page
+      );
+
+    if(selected){
+
+      selected.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+    document
+      .querySelectorAll(
+        ".menu-item"
+      )
+      .forEach(
+        item => {
+          item.classList.remove(
+            "active"
+          );
+        }
+      );
+
+
+    if(page === "search"){
+
+      loadOnlineUsers();
+
+    }
+
+
+    if(page === "notifications"){
+
+      loadNotifications();
+
+    }
+
+
+    if(page === "profile"){
+
+      updateUserUI();
+
+    }
+
+  }
+
+
+  function toggleMenu(){
+
+    const menu =
+      document.getElementById(
+        "sideMenu"
+      );
+
+    if(
+      window.innerWidth <= 800
+    ){
+
+      menu.style.display =
+        menu.style.display === "block"
+          ? "none"
+          : "block";
+
+    }
+
+  }
+
+
+  /* =========================
+     SEARCH
+  ========================= */
+
+  async function searchUsers(){
+
+    const q =
+      document
+        .getElementById("searchInput")
+        .value
+        .trim();
+
+    if(!q){
+
+      showToast(
+        "Maqaa galchi."
+      );
+
+      return;
+
+    }
+
+    try{
+
+      const data =
+        await api(
+          "/api/search?q=" +
+          encodeURIComponent(q)
+        );
+
+      const users =
+        data.users ||
+        data ||
+        [];
+
+      const container =
+        document.getElementById(
+          "searchResults"
+        );
+
+      container.innerHTML = "";
+
+      if(!users.length){
+
+        container.innerHTML =
+          "<p style='color:#777;'>Namni hin argamne.</p>";
+
+        return;
+
+      }
+
+      users.forEach(
+        user => {
+
+          container.appendChild(
+            createUserRow(user)
+          );
+
+        }
+      );
+
+    }catch(error){
+
+      showToast(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  function createUserRow(user){
+
+    const row =
+      document.createElement(
+        "div"
+      );
+
+    row.className =
+      "user-row";
+
+    const avatar =
+      document.createElement(
+        "div"
+      );
+
+    avatar.className =
+      "user-avatar";
+
+    avatar.textContent =
+      (
+        user.username ||
+        "U"
+      )
+      .charAt(0)
+      .toUpperCase();
+
+
+    const info =
+      document.createElement(
+        "div"
+      );
+
+    info.className =
+      "user-info";
+
+    info.innerHTML =
+      `
+      <strong>
+        ${escapeHtml(
+          user.username || ""
+        )}
+      </strong>
+      <br>
+      <small>
+        ${user.online ? "🟢 Online" : "Offline"}
+      </small>
+      `;
+
+
+    const chatBtn =
+      document.createElement(
+        "button"
+      );
+
+    chatBtn.className =
+      "green-btn";
+
+    chatBtn.textContent =
+      "Chat";
+
+    chatBtn.onclick =
+      () => {
+
+        currentChatUser =
+          user;
+
+        openPage("chat");
+
+        loadMessages(
+          user.id
+        );
+
+      };
+
+
+    row.appendChild(
+      avatar
+    );
+
+    row.appendChild(
+      info
+    );
+
+    row.appendChild(
+      chatBtn
+    );
+
+    return row;
+
+  }
+
+
+  async function loadOnlineUsers(){
+
+    try{
+
+      const data =
+        await api(
+          "/api/online-users"
+        );
+
+      const users =
+        data.users ||
+        data ||
+        [];
+
+      const container =
+        document.getElementById(
+          "searchResults"
+        );
+
+      if(
+        !container.innerHTML
+      ){
+
+        users.forEach(
+          user => {
+
+            container.appendChild(
+              createUserRow(user)
+            );
+
+          }
+        );
+
+      }
+
+    }catch(e){}
+
+  }
+
+
+  /* =========================
+     CHAT
+  ========================= */
+
+  async function loadMessages(
+    userId
+  ){
+
+    currentChatUser =
+      currentChatUser || {
+        id:userId
+      };
+
+    try{
+
+      const data =
+        await api(
+          "/api/messages/" +
+          userId
+        );
+
+      const messages =
+        data.messages ||
+        data ||
+        [];
+
+      const box =
+        document.getElementById(
+          "chatBox"
+        );
+
+      box.innerHTML = "";
+
+      if(!messages.length){
+
+        box.innerHTML =
+          "<p style='text-align:center;color:#777;'>Ergaan hin jiru.</p>";
+
+        return;
+
+      }
+
+      messages.forEach(
+        message => {
+
+          const div =
+            document.createElement(
+              "div"
+            );
+
+          const mine =
+            message.from_id ==
+            currentUser.id;
+
+          div.className =
+            "message " +
+            (
+              mine
+                ? "mine"
+                : "other"
+            );
+
+          div.innerHTML =
+            escapeHtml(
+              message.content ||
+              message.message ||
+              ""
+            );
+
+          box.appendChild(
+            div
+          );
+
+        }
+      );
+
+      box.scrollTop =
+        box.scrollHeight;
+
+    }catch(error){
+
+      showToast(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  async function sendMessage(){
+
+    if(
+      !currentChatUser
+    ){
+
+      showToast(
+        "Dura nama tokko filadhu."
+      );
+
+      return;
+
+    }
+
+    const input =
+      document.getElementById(
+        "messageInput"
+      );
+
+    const content =
+      input.value.trim();
+
+    if(!content)
+      return;
+
+
+    try{
+
+      await api(
+        "/api/messages",
+        {
+          method:"POST",
+          body:JSON.stringify({
+            to_id:currentChatUser.id,
+            content
+          })
+        }
+      );
+
+      input.value = "";
+
+      loadMessages(
+        currentChatUser.id
+      );
+
+    }catch(error){
+
+      showToast(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  /* =========================
+     CLUB
+  ========================= */
+
+  function showCreateClubModal(){
+
+    document
+      .getElementById(
+        "createClubModal"
+      )
+      .classList.remove(
+        "hidden"
+      );
+
+  }
+
+
+  function closeCreateClubModal(){
+
+    document
+      .getElementById(
+        "createClubModal"
+      )
+      .classList.add(
+        "hidden"
+      );
+
+  }
+
+
+  async function createClub(){
+
+    const name =
+      document
+        .getElementById("clubName")
+        .value
+        .trim();
+
+    const seats =
+      Number(
+        document
+          .getElementById("clubSeats")
+          .value
+      );
+
+    if(!name){
+
+      showToast(
+        "Maqaa Club galchi."
+      );
+
+      return;
+
+    }
+
+    try{
+
+      const data =
+        await api(
+          "/api/clubs",
+          {
+            method:"POST",
+            body:JSON.stringify({
+              name,
+              seats
+            })
+          }
+        );
+
+      closeCreateClubModal();
+
+      renderClub(
+        data.club || data
+      );
+
+      showToast(
+        "Club uumame."
+      );
+
+    }catch(error){
+
+      showToast(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  async function joinClub(){
+
+    const clubId =
+      document
+        .getElementById(
+          "joinClubId"
+        )
+        .value
+        .trim();
+
+    if(!clubId){
+
+      showToast(
+        "Club ID galchi."
+      );
+
+      return;
+
+    }
+
+    try{
+
+      const data =
+        await api(
+          "/api/clubs/" +
+          encodeURIComponent(
+            clubId
+          ) +
+          "/join",
+          {
+            method:"POST"
+          }
+        );
+
+      renderClub(
+        data.club || data
+      );
+
+      showToast(
+        "Club keessa seente."
+      );
+
+    }catch(error){
+
+      showToast(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  function renderClub(club){
+
+    if(!club)
+      return;
+
+    const area =
+      document.getElementById(
+        "clubArea"
+      );
+
+    area.innerHTML = "";
+
+
+    const card =
+      document.createElement(
+        "div"
+      );
+
+    card.className =
+      "card";
+
+
+    card.innerHTML =
+      `
+      <h3>🎙️ ${escapeHtml(
+        club.name || "Waliin Club"
+      )}</h3>
+
+      <p>
+        Club ID:
+        <strong>
+          ${escapeHtml(
+            club.id || ""
+          )}
+        </strong>
+      </p>
+
+      <p style="margin-top:8px;color:#777;">
+        Seats:
+        ${club.seats || 10}
+      </p>
+
+      <div class="seat-grid" id="clubSeatsGrid"></div>
+
+      <br>
+
+      <button
+        class="danger-btn"
+        onclick="leaveClub()"
+      >
+        Leave Club
+      </button>
+      `;
+
+
+    area.appendChild(
+      card
+    );
+
+
+    const grid =
+      document.getElementById(
+        "clubSeatsGrid"
+      );
+
+
+    const total =
+      Number(
+        club.seats || 10
+      );
+
+
+    const occupied =
+      club.members ||
+      club.seated ||
+      [];
+
+
+    for(
+      let i = 1;
+      i <= total;
+      i++
+    ){
+
+      const seat =
+        document.createElement(
+          "div"
+        );
+
+      seat.className =
+        "seat";
+
+
+      let member =
+        null;
+
+      if(
+        Array.isArray(
+          occupied
+        )
+      ){
+
+        member =
+          occupied.find(
+            m =>
+              Number(
+                m.seat ||
+                m.seat_number
+              ) === i
+          );
+
+      }
+
+
+      if(member){
+
+        seat.classList.add(
+          "occupied"
+        );
+
+        seat.innerHTML =
+          `
+          <strong>
+            ${escapeHtml(
+              member.username || "User"
+            )}
+          </strong>
+          <small>
+            Seat ${i}
+          </small>
+          `;
+
+      }else{
+
+        seat.innerHTML =
+          `
+          <strong>
+            ${i}
+          </strong>
+          <small>
+            Empty
+          </small>
+          `;
+
+      }
+
+      grid.appendChild(
+        seat
+      );
+
+    }
+
+  }
+
+
+  async function leaveClub(){
+
+    try{
+
+      await api(
+        "/api/clubs/leave",
+        {
+          method:"POST"
+        }
+      );
+
+      document
+        .getElementById(
+          "clubArea"
+        )
+        .innerHTML = "";
+
+      showToast(
+        "Club keessaa baate."
+      );
+
+    }catch(error){
+
+      showToast(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  /* =========================
+     VIDEO
+  ========================= */
+
+  async function startVideo(){
+
+    try{
+
+      localStream =
+        await navigator.mediaDevices
+          .getUserMedia({
+            video:true,
+            audio:true
+          });
+
+      document
+        .getElementById(
+          "localVideo"
+        )
+        .srcObject =
+        localStream;
+
+    }catch(error){
+
+      showToast(
+        "Camera/Microphone banamuu dide."
+      );
+
+    }
+
+  }
+
+
+  function stopVideo(){
+
+    if(localStream){
+
+      localStream
+        .getTracks()
+        .forEach(
+          track => track.stop()
+        );
+
+      localStream = null;
+
+    }
+
+    document
+      .getElementById(
+        "localVideo"
+      )
+      .srcObject = null;
+
+  }
+
+
+  /* =========================
+     CALL
+  ========================= */
+
+  async function startCall(
+    userId,
+    type = "audio"
+  ){
+
+    try{
+
+      localStream =
+        await navigator.mediaDevices
+          .getUserMedia({
+            audio:true,
+            video:type === "video"
+          });
+
+
+      peerConnection =
+        createPeerConnection(
+          userId
+        );
+
+
+      localStream
+        .getTracks()
+        .forEach(
+          track => {
+
+            peerConnection.addTrack(
+              track,
+              localStream
+            );
+
+          }
+        );
+
+
+      const offer =
+        await peerConnection
+          .createOffer();
+
+
+      await peerConnection
+        .setLocalDescription(
+          offer
+        );
+
+
+      socket.emit(
+        "callUser",
+        {
+          to:userId,
+          type,
+          offer
+        }
+      );
+
+    }catch(error){
+
+      showToast(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  function createPeerConnection(
+    userId
+  ){
+
+    const pc =
+      new RTCPeerConnection({
+        iceServers:[
+          {
+            urls:
+              "stun:stun.l.google.com:19302"
+          }
+        ]
+      });
+
+
+    pc.onicecandidate =
+      event => {
+
+        if(
+          event.candidate
+        ){
+
+          socket.emit(
+            "webrtc-ice",
+            {
+              to:userId,
+              candidate:
+                event.candidate
+            }
+          );
+
+        }
+
+      };
+
+
+    pc.ontrack =
+      event => {
+
+        const audio =
+          document.getElementById(
+            "remoteAudio"
+          );
+
+        audio.srcObject =
+          event.streams[0];
+
+      };
+
+
+    return pc;
+
+  }
+
+
+  async function handleOffer(
+    data
+  ){
+
+    try{
+
+      const from =
+        data.from ||
+        data.userId;
+
+      localStream =
+        await navigator.mediaDevices
+          .getUserMedia({
+            audio:true,
+            video:
+              data.type === "video"
+          });
+
+
+      peerConnection =
+        createPeerConnection(
+          from
+        );
+
+
+      localStream
+        .getTracks()
+        .forEach(
+          track => {
+
+            peerConnection.addTrack(
+              track,
+              localStream
+            );
+
+          }
+        );
+
+
+      await peerConnection
+        .setRemoteDescription(
+          data.offer
+        );
+
+
+      const answer =
+        await peerConnection
+          .createAnswer();
+
+
+      await peerConnection
+        .setLocalDescription(
+          answer
+        );
+
+
+      socket.emit(
+        "webrtc-answer",
+        {
+          to:from,
+          answer
+        }
+      );
+
+    }catch(error){
+
+      showToast(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  async function handleAnswer(
+    answer
+  ){
+
+    if(
+      peerConnection &&
+      answer
+    ){
+
+      await peerConnection
+        .setRemoteDescription(
+          answer
+        );
+
+    }
+
+  }
+
+
+  function rejectIncomingCall(){
+
+    if(
+      incomingCallData &&
+      socket
+    ){
+
+      socket.emit(
+        "rejectCall",
+        {
+          to:
+            incomingCallData.from
+        }
+      );
+
+    }
+
+    document
+      .getElementById(
+        "incomingCallModal"
+      )
+      .classList.add(
+        "hidden"
+      );
+
+    incomingCallData = null;
+
+  }
+
+
+  async function acceptIncomingCall(){
+
+    document
+      .getElementById(
+        "incomingCallModal"
+      )
+      .classList.add(
+        "hidden"
+      );
+
+    if(
+      incomingCallData
+    ){
+
+      socket.emit(
+        "acceptCall",
+        {
+          to:
+            incomingCallData.from
+        }
+      );
+
+      await handleOffer(
+        incomingCallData
+      );
+
+      incomingCallData = null;
+
+    }
+
+  }
+
+
+  function endCallLocal(){
+
+    if(peerConnection){
+
+      peerConnection.close();
+
+      peerConnection = null;
+
+    }
+
+    if(localStream){
+
+      localStream
+        .getTracks()
+        .forEach(
+          track => track.stop()
+        );
+
+      localStream = null;
+
+    }
+
+    document
+      .getElementById(
+        "remoteAudio"
+      )
+      .srcObject = null;
+
+  }
+
+
+  /* =========================
+     NOTIFICATIONS
+  ========================= */
+
+  async function loadNotifications(){
+
+    try{
+
+      const data =
+        await api(
+          "/api/notifications"
+        );
+
+      const notifications =
+        data.notifications ||
+        data ||
+        [];
+
+      const container =
+        document.getElementById(
+          "notificationsList"
+        );
+
+      container.innerHTML = "";
+
+
+      if(!notifications.length){
+
+        container.innerHTML =
+          "<p style='color:#777;'>Notification hin jiru.</p>";
+
+        return;
+
+      }
+
+
+      notifications.forEach(
+        n => {
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+          item.className =
+            "settings-row";
+
+          item.innerHTML =
+            `
+            <strong>
+              ${escapeHtml(
+                n.title || "Notification"
+              )}
+            </strong>
+
+            <p>
+              ${escapeHtml(
+                n.message || ""
+              )}
+            </p>
+            `;
+
+          container.appendChild(
+            item
+          );
+
+        }
+      );
+
+    }catch(e){}
+
+  }
+
+
+  /* =========================
+     SETTINGS
+  ========================= */
+
+  function toggleDarkMode(){
+
+    document
+      .body
+      .classList
+      .toggle("dark");
+
+    localStorage.setItem(
+      "waliin_dark",
+      document
+        .body
+        .classList
+        .contains("dark")
+        ? "1"
+        : "0"
+    );
+
+  }
+
+
+  function initDarkMode(){
+
+    if(
+      localStorage.getItem(
+        "waliin_dark"
+      ) === "1"
+    ){
+
+      document
+        .body
+        .classList
+        .add("dark");
+
+    }
+
+  }
+
+
+  /* =========================
+     LOGOUT
+  ========================= */
+
+  async function logout(){
+
+    try{
+
+      await api(
+        "/api/logout",
+        {
+          method:"POST"
+        }
+      );
+
+    }catch(e){}
+
+
+    token = null;
+
+    currentUser = null;
+
+    if(socket){
+
+      socket.disconnect();
+
+      socket = null;
+
+    }
+
+    localStorage.removeItem(
+      "waliin_token"
+    );
+
+    localStorage.removeItem(
+      "waliin_user"
+    );
+
+
+    document
+      .getElementById(
+        "appPage"
+      )
+      .classList.add(
+        "hidden"
+      );
+
+    document
+      .getElementById(
+        "authPage"
+      )
+      .classList.remove(
+        "hidden"
+      );
+
+  }
+
+
+  /* =========================
+     HELPERS
+  ========================= */
+
+  function showToast(
+    message
+  ){
+
+    const toast =
+      document.getElementById(
+        "toast"
+      );
+
+    toast.textContent =
+      message;
+
+    toast.style.display =
+      "block";
+
+
+    setTimeout(
+      () => {
+
+        toast.style.display =
+          "none";
+
+      },
+      3000
+    );
+
+  }
+
+
+  function escapeHtml(
+    value
+  ){
+
+    return String(value)
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+
+  }
+
+
+  /* =========================
+     START APP
+  ========================= */
+
+  initDarkMode();
+
+
+  if(
+    token &&
+    currentUser
+  ){
+
+    openApp();
+
+  }
+
+</script>
+
+
+<script>
+
+  /* SERVICE WORKER */
+
+  if(
+    "serviceWorker" in navigator
+  ){
+
+    window.addEventListener(
+      "load",
+      () => {
+
+        navigator.serviceWorker
+          .register("/sw.js")
+          .catch(
+            error => {
+              console.log(
+                "SW error:",
+                error
+              );
+            }
+          );
+
+      }
+    );
+
+  }
+
+</script>
+
+</body>
+  </html>
